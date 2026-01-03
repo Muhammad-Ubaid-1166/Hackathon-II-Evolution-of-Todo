@@ -12,8 +12,8 @@ import {
   Sparkles,
   TrendingUp
 } from 'lucide-react';
-import Greetings from '../components/Greetings'
-import { useToastTask }  from '../components/toast'
+import Greetings from '../../components/Greetings'
+import { useToastTask }  from '../../components/toast'
 
 interface Task {
   id: string;
