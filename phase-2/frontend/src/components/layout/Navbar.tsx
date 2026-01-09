@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Home, LayoutDashboard, LogIn, UserPlus } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,25 +85,23 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <motion.a
-                href="/"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex-shrink-0 flex items-center group"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                  className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mr-2"
-                >
-                  <span className="text-white font-bold text-sm">T</span>
-                </motion.div>
-                <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            
+            <Link
+            href="/"
+            className="flex items-center gap-2 font-bold text-white group"
+          >
+            <Image
+              src="/logo.png"
+              alt="taskgenie"
+              width={180}
+              height={100}
+              className="flex h-8 w-auto md:h-10 transition-transform group-hover:scale-105"
+            />
+           <span className="text-lg font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                   ToDoze
                 </span>
-              </motion.a>
-            </div>
+          </Link>
+
 
             {/* Desktop Navigation */}
             <nav className="hidden gap-8 text-sm font-medium text-slate-400 flex justify-center items-center md:flex">
