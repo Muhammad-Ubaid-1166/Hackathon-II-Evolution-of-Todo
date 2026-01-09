@@ -7,7 +7,7 @@ interface ProductivityCardProps {
 }
 
 export default function ProductivityCard({ completedTasks, todayTasks }: ProductivityCardProps) {
-  const percentage = todayTasks > 0 ? Math.round((completedTasks / todayTasks) * 100) : 0;
+  const percentage = todayTasks > 0 ? Math.min(Math.round((completedTasks / todayTasks) * 100), 100) : 0;
 
   return (
     <div className="relative z-5 p-6 bg-gradient-to-br from-cyan-900/20 to-cyan-800/10 border border-cyan-500/20 rounded-2xl backdrop-blur-sm ">
