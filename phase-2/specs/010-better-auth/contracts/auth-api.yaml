@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: Better Auth API for Todo Evolution
+  description: API contracts for authentication functionality using Better Auth
+  version: 1.0.0
+
+paths:
+  /api/auth/signup:
+    post:
+      summary: Create a new user account
+      description: Register a new user with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                  example: user@example.com
+                password:
+                  type: string
+                  minLength: 8
+                  description: User's password (min 8 characters)
+                  example: securePassword123
+      responses:
+        '200':
+          description: User successfully created and authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  session:
+                    $ref: '#/components/schemas/Session'
+        '400':
+          description: Invalid input or user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+
+  /api/auth/signin:
+    post:
+      summary: Authenticate user
+      description: Sign in with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                  example: user@example.com
+                password:
+                  type: string
+                  description: User's password
+                  example: securePassword123
+      responses:
+        '200':
+          description: User successfully authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  session:
+                    $ref: '#/components/schemas/Session'
+        '400':
+          description: Invalid credentials or input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid credentials
+        '500':
+          description: Internal server error
+
+  /api/auth/signout:
+    post:
+      summary: Sign out user
+      description: Invalidate the current user session
+      responses:
+        '200':
+          description: User successfully signed out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Successfully signed out"
+        '401':
+          description: User not authenticated
+        '500':
+          description: Internal server error
+
+  /api/auth/session:
+    get:
+      summary: Get current session
+      description: Retrieve information about the current authenticated session
+      responses:
+        '200':
+          description: Current session information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  session:
+                    $ref: '#/components/schemas/Session'
+        '401':
+          description: User not authenticated
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the user
+          example: "user_123456789"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: user@example.com
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the user account was created
+          example: "2023-01-01T00:00:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the user account was last updated
+          example: "2023-01-01T00:00:00.000Z"
+        emailVerified:
+          type: string
+          format: date-time
+          description: Timestamp when email was verified (if applicable)
+          example: "2023-01-01T00:00:00.000Z"
+      required:
+        - id
+        - email
+        - createdAt
+        - updatedAt
+
+    Session:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the session
+          example: "sess_123456789"
+        userId:
+          type: string
+          description: Reference to the associated user
+          example: "user_123456789"
+        expiresAt:
+          type: string
+          format: date-time
+          description: Timestamp when the session expires
+          example: "2023-01-08T00:00:00.000Z"
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the session was created
+          example: "2023-01-01T00:00:00.000Z"
+      required:
+        - id
+        - userId
+        - expiresAt
+        - createdAt
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "Invalid email format"
+        details:
+          type: object
+          description: Additional error details (optional)
+          example: {"field": "email"}
+      required:
+        - error
