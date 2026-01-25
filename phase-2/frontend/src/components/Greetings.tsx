@@ -1,5 +1,7 @@
+
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { motion, Variants } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 
@@ -16,6 +18,11 @@ const getGreeting = () => {
 };
 
 function Greetings() {
+  const { data: session } = useSession();
+  
+  // Get user name from session, fall back to 'User' if not available
+  const userName = session?.user?.name || session?.user?.email?.split('@')[0] || 'User';
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -56,7 +63,7 @@ function Greetings() {
           <Sparkles className="w-5 h-5 text-white" />
         </motion.div>
         <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-blue-200 to-cyan-200 bg-clip-text text-transparent">
-          {getGreeting()}, User 👋
+          {getGreeting()}, {userName} 👋
         </h1>
       </motion.div>
       
