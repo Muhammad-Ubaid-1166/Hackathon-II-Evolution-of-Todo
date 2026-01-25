@@ -4,6 +4,7 @@ import Greetings from '../../components/Greetings'
 import { useToastTask } from '../../components/toast'
 import { taskAPI, type Task } from '../../lib/api'
 import { EditTaskModal } from '../../components/dashboard'
+import Loading from "../loading"
 import { 
   Plus, 
   CheckCircle2, 
@@ -183,12 +184,7 @@ const TodoDashboard = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
-        <div className="flex items-center gap-3">
-          <div className="animate-spin h-8 w-8 border-3 border-blue-500 border-t-transparent rounded-full"></div>
-          <span className="text-gray-400 text-lg">Loading tasks...</span>
-        </div>
-      </div>
+     <Loading/>
     );
   }
 
