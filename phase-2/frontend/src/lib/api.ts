@@ -1,3 +1,5 @@
+import { getSession } from "next-auth/react";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export interface Task {
@@ -36,12 +38,20 @@ class TaskAPI {
     options: RequestInit = {}
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    
+
+    // Get the session to include the auth token
+    const session = await getSession();
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...options.headers as Record<string, string>,
+    };
+
+    if ((session as any)?.accessToken) {
+      headers['Authorization'] = `Bearer ${(session as any).accessToken}`;
+    }
+
     const config: RequestInit = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+      headers,
       ...options,
     };
 

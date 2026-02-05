@@ -9,5 +9,6 @@ dependencies = [
     "psycopg[binary]>=3.2",
     "pydantic>=2.12.5",
     "python-dotenv>=1.0.0",
+    "python-jose>=3.5.0",
     "sqlmodel>=0.0.27",
 ]
